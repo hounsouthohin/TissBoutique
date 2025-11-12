@@ -1,0 +1,206 @@
+ECommerceApp/
+├── 📂 backend/
+│   ├── 📂 ECommerce.API/                    # Couche présentation
+│   │   ├── Controllers/
+│   │   │   ├── AuthController.cs
+│   │   │   ├── ProductsController.cs
+│   │   │   ├── OrdersController.cs
+│   │   │   ├── CartController.cs
+│   │   │   └── PaymentsController.cs
+│   │   ├── Hubs/
+│   │   │   └── NotificationHub.cs
+│   │   ├── Middleware/
+│   │   │   ├── ExceptionHandlingMiddleware.cs
+│   │   │   └── RequestLoggingMiddleware.cs
+│   │   ├── Filters/
+│   │   │   └── ValidateModelAttribute.cs
+│   │   ├── Program.cs
+│   │   ├── appsettings.json
+│   │   ├── appsettings.Development.json
+│   │   └── ECommerce.API.csproj
+│   │
+│   ├── 📂 ECommerce.Application/             # Logique applicative
+│   │   ├── DTOs/
+│   │   │   ├── Auth/
+│   │   │   │   ├── LoginRequestDto.cs
+│   │   │   │   ├── RegisterRequestDto.cs
+│   │   │   │   └── AuthResponseDto.cs
+│   │   │   ├── Products/
+│   │   │   │   ├── ProductDto.cs
+│   │   │   │   ├── CreateProductDto.cs
+│   │   │   │   └── UpdateProductDto.cs
+│   │   │   ├── Orders/
+│   │   │   │   ├── OrderDto.cs
+│   │   │   │   ├── CreateOrderDto.cs
+│   │   │   │   └── OrderItemDto.cs
+│   │   │   └── Payments/
+│   │   │       └── PaymentIntentDto.cs
+│   │   ├── Interfaces/
+│   │   │   ├── IAuthService.cs
+│   │   │   ├── IProductService.cs
+│   │   │   ├── IOrderService.cs
+│   │   │   ├── ICartService.cs
+│   │   │   └── IPaymentService.cs
+│   │   ├── Services/
+│   │   │   ├── AuthService.cs
+│   │   │   ├── ProductService.cs
+│   │   │   ├── OrderService.cs
+│   │   │   ├── CartService.cs
+│   │   │   └── PaymentService.cs
+│   │   ├── Validators/
+│   │   │   ├── RegisterRequestValidator.cs
+│   │   │   └── CreateProductValidator.cs
+│   │   ├── Mappings/
+│   │   │   └── MappingProfile.cs
+│   │   └── ECommerce.Application.csproj
+│   │
+│   ├── 📂 ECommerce.Domain/                  # Entités métier
+│   │   ├── Entities/
+│   │   │   ├── User.cs
+│   │   │   ├── Product.cs
+│   │   │   ├── Category.cs
+│   │   │   ├── Order.cs
+│   │   │   ├── OrderItem.cs
+│   │   │   ├── Cart.cs
+│   │   │   ├── CartItem.cs
+│   │   │   ├── Payment.cs
+│   │   │   ├── Review.cs
+│   │   │   └── Address.cs
+│   │   ├── Enums/
+│   │   │   ├── OrderStatus.cs
+│   │   │   ├── PaymentStatus.cs
+│   │   │   └── UserRole.cs
+│   │   ├── ValueObjects/
+│   │   │   └── Money.cs
+│   │   ├── Interfaces/
+│   │   │   ├── IProductRepository.cs
+│   │   │   ├── IOrderRepository.cs
+│   │   │   ├── ICartRepository.cs
+│   │   │   └── IUnitOfWork.cs
+│   │   └── ECommerce.Domain.csproj
+│   │
+│   ├── 📂 ECommerce.Infrastructure/          # Accès données
+│   │   ├── Data/
+│   │   │   ├── AppDbContext.cs
+│   │   │   ├── DbInitializer.cs
+│   │   │   └── Configurations/
+│   │   │       ├── ProductConfiguration.cs
+│   │   │       ├── OrderConfiguration.cs
+│   │   │       └── UserConfiguration.cs
+│   │   ├── Repositories/
+│   │   │   ├── GenericRepository.cs
+│   │   │   ├── ProductRepository.cs
+│   │   │   ├── OrderRepository.cs
+│   │   │   ├── CartRepository.cs
+│   │   │   └── UnitOfWork.cs
+│   │   ├── Services/
+│   │   │   ├── StripePaymentService.cs
+│   │   │   ├── EmailService.cs
+│   │   │   └── BlobStorageService.cs
+│   │   ├── Migrations/
+│   │   └── ECommerce.Infrastructure.csproj
+│   │
+│   ├── 📂 ECommerce.Tests/
+│   │   ├── Unit/
+│   │   │   ├── ProductServiceTests.cs
+│   │   │   └── OrderServiceTests.cs
+│   │   ├── Integration/
+│   │   │   └── ProductsControllerTests.cs
+│   │   └── ECommerce.Tests.csproj
+│   │
+│   ├── ECommerce.sln
+│   ├── .gitignore
+│   ├── docker-compose.yml
+│   └── README.md
+│
+├── 📂 frontend/
+│   ├── 📂 public/
+│   │   ├── index.html
+│   │   └── favicon.ico
+│   ├── 📂 src/
+│   │   ├── 📂 assets/
+│   │   │   ├── images/
+│   │   │   └── icons/
+│   │   ├── 📂 components/
+│   │   │   ├── common/
+│   │   │   │   ├── Button.tsx
+│   │   │   │   ├── Input.tsx
+│   │   │   │   ├── Modal.tsx
+│   │   │   │   ├── Loader.tsx
+│   │   │   │   └── Navbar.tsx
+│   │   │   ├── products/
+│   │   │   │   ├── ProductCard.tsx
+│   │   │   │   ├── ProductList.tsx
+│   │   │   │   ├── ProductFilter.tsx
+│   │   │   │   └── ProductDetail.tsx
+│   │   │   ├── cart/
+│   │   │   │   ├── CartItem.tsx
+│   │   │   │   └── CartSummary.tsx
+│   │   │   └── orders/
+│   │   │       ├── OrderCard.tsx
+│   │   │       └── OrderHistory.tsx
+│   │   ├── 📂 pages/
+│   │   │   ├── Home.tsx
+│   │   │   ├── Login.tsx
+│   │   │   ├── Register.tsx
+│   │   │   ├── Products.tsx
+│   │   │   ├── ProductDetails.tsx
+│   │   │   ├── Cart.tsx
+│   │   │   ├── Checkout.tsx
+│   │   │   ├── Orders.tsx
+│   │   │   ├── Profile.tsx
+│   │   │   └── Admin/
+│   │   │       ├── Dashboard.tsx
+│   │   │       ├── ProductManagement.tsx
+│   │   │       └── OrderManagement.tsx
+│   │   ├── 📂 services/
+│   │   │   ├── api.ts
+│   │   │   ├── authService.ts
+│   │   │   ├── productService.ts
+│   │   │   ├── orderService.ts
+│   │   │   ├── cartService.ts
+│   │   │   └── signalrService.ts
+│   │   ├── 📂 hooks/
+│   │   │   ├── useAuth.ts
+│   │   │   ├── useCart.ts
+│   │   │   ├── useProducts.ts
+│   │   │   └── useNotifications.ts
+│   │   ├── 📂 store/
+│   │   │   ├── index.ts
+│   │   │   ├── slices/
+│   │   │   │   ├── authSlice.ts
+│   │   │   │   ├── cartSlice.ts
+│   │   │   │   └── productsSlice.ts
+│   │   │   └── store.ts
+│   │   ├── 📂 types/
+│   │   │   ├── auth.types.ts
+│   │   │   ├── product.types.ts
+│   │   │   ├── order.types.ts
+│   │   │   └── cart.types.ts
+│   │   ├── 📂 utils/
+│   │   │   ├── constants.ts
+│   │   │   ├── validators.ts
+│   │   │   └── formatters.ts
+│   │   ├── 📂 routes/
+│   │   │   ├── AppRoutes.tsx
+│   │   │   ├── PrivateRoute.tsx
+│   │   │   └── AdminRoute.tsx
+│   │   ├── App.tsx
+│   │   ├── main.tsx
+│   │   └── index.css
+│   ├── package.json
+│   ├── tsconfig.json
+│   ├── tailwind.config.js
+│   ├── vite.config.ts
+│   ├── .env
+│   ├── .env.example
+│   └── .gitignore
+│
+├── 📂 .github/
+│   └── workflows/
+│       ├── backend-ci.yml
+│       └── frontend-ci.yml
+│
+├── docker-compose.yml
+├── .gitignore
+└── README.md

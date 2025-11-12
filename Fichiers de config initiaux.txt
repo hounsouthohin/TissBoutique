@@ -1,0 +1,68 @@
+Fichiers de config initiaux 
+
+1.Backend-docker-compose.yml 
+
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: ecommerce_postgres
+    environment:
+      POSTGRES_USER: ecommerce_user
+      POSTGRES_PASSWORD: SecurePass123!
+      POSTGRES_DB: ecommerce_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - ecommerce-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: ecommerce_redis
+    ports:
+      - "6379:6379"
+    networks:
+      - ecommerce-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: ECommerce.API/Dockerfile
+    container_name: ecommerce_backend
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=postgres;Database=ecommerce_db;Username=ecommerce_user;Password=SecurePass123!
+      - ConnectionStrings__Redis=redis:6379
+      - JwtSettings__Secret=YourSuperSecretKeyMinimum32CharactersLong!
+      - Stripe__SecretKey=${STRIPE_SECRET_KEY}
+    ports:
+      - "5000:8080"
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - ecommerce-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: ecommerce_frontend
+    environment:
+      - VITE_API_URL=http://localhost:5000/api
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - ecommerce-network
+
+volumes:
+  postgres_data:
+
+networks:
+  ecommerce-network:
+    driver: bridge

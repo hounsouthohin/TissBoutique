@@ -1,0 +1,326 @@
+🧩 MODULE 1 – Vision & Architecture Globale
+
+Objectif : Concevoir une application web e-commerce complète (type Shein / Amazon) du début à la fin.
+Fournis une architecture complète, performante, modulaire et sécurisée, basée sur :
+
+Technos principales :
+
+Backend : ASP.NET Core 8 (C#)
+
+ORM : Entity Framework Core (Code First)
+
+Frontend : React + TypeScript + TailwindCSS
+
+API : RESTful + SignalR
+
+Paiement : Stripe
+
+Authentification : ASP.NET Identity + JWT
+
+Base de données : PostgreSQL ou SQL Server
+
+Conteneurisation : Docker
+
+CI/CD : GitHub Actions
+
+Inclure :
+
+Diagramme logique des composants (texte)
+
+Architecture logicielle : Clean Architecture (Domain, Application, Infrastructure, API)
+
+Arborescence complète des dossiers (backend + frontend)
+
+Outils nécessaires : IDE, extensions VSCode, Postman, Git, Docker Desktop
+
+Fichiers initiaux à créer : .env, docker-compose.yml, .gitignore, README.md
+
+Étapes d’initialisation du projet (dotnet new, npx create-react-app, etc.)
+
+Bonnes pratiques de structuration du code (services, controllers, DTOs, etc.)
+
+🧱 MODULE 2 – Conception de la Base de Données (Code First EF Core)
+
+Objectif : Concevoir le modèle complet de la base de données pour l’application e-commerce, avec la méthode Code First d’Entity Framework Core.
+
+Inclure :
+
+Liste complète des entités : User, Address, Product, Category, ProductImage, ProductVariant, Cart, CartItem, Order, OrderItem, Payment, Shipment
+
+Relations : 1-n, n-n, clés étrangères
+
+Champs essentiels et leurs types (int, decimal, string, DateTime, etc.)
+
+Classes C# pour chaque entité avec annotations EF Core ([Key], [ForeignKey], [Required], [MaxLength], etc.)
+
+Fichier ApplicationDbContext avec DbSet<> pour chaque entité
+
+Méthodes OnModelCreating() pour les relations complexes
+
+Configuration appsettings.json (chaîne de connexion)
+
+Étapes pour créer la DB :
+
+dotnet ef migrations add InitialCreate  
+dotnet ef database update
+
+
+Exemple de Data Seeder pour insérer des données de test (produits, catégories)
+
+Recommandation d’outil visuel (DBeaver / Azure Data Studio)
+
+Schéma logique textuel de la DB
+
+Sortie attendue :
+
+Exemple concret de 3 classes (User, Product, Order)
+
+Fichier DbContext
+
+Commandes EF Core à exécuter pour générer la DB Code First
+
+🔗 MODULE 3 – Conception de l’API RESTful
+
+Objectif : Créer une API RESTful moderne basée sur ASP.NET Core et EF Core (Code First).
+
+Inclure :
+
+Endpoints CRUD pour chaque entité clé : produits, catégories, utilisateurs, commandes, paiements
+
+Organisation en couches :
+
+Controllers/
+
+Services/
+
+Repositories/
+
+DTOs/
+
+Validation avec FluentValidation
+
+Middleware global (gestion d’erreurs, logs, CORS, compression)
+
+Swagger / Swashbuckle pour documenter l’API
+
+Exemple de contrôleur complet (ProductController)
+
+Exemple de requêtes HTTP Postman / Swagger
+
+Bonnes pratiques : async/await, pagination, DTOs, AutoMapper
+
+Gestion centralisée des exceptions (UseExceptionHandler)
+
+Sortie attendue :
+
+Structure du projet backend (Clean Architecture)
+
+Exemple de code (controller, service, repository)
+
+Documentation Swagger prête à l’emploi
+
+🔐 MODULE 4 – Authentification & Sécurité
+
+Objectif : Implémenter un système complet d’authentification et de sécurité.
+
+Inclure :
+
+ASP.NET Identity + Entity Framework Core (tables Users, Roles, Claims)
+
+JWT + Refresh Tokens
+
+OAuth2 (Google, Facebook)
+
+Middleware d’authentification et d’autorisation
+
+Hashage sécurisé des mots de passe
+
+Validation des emails et 2FA
+
+Rôles : Admin, Client
+
+Sécurisation HTTPS et CORS
+
+Sortie attendue :
+
+Classes Auth / User
+
+Endpoints : /api/auth/register, /api/auth/login, /api/auth/refresh
+
+Exemple de configuration JWT dans Program.cs
+
+Meilleures pratiques : rotation de tokens, expiration, sécurité headers
+
+💳 MODULE 5 – Paiement & Commandes (Stripe)
+
+Objectif : Intégrer un système de paiement complet avec Stripe.
+
+Inclure :
+
+Création d’une commande (Order + OrderItems)
+
+Intégration Stripe Checkout / Payment Intent API
+
+Webhooks Stripe pour confirmer paiements
+
+Sauvegarde transaction dans Payments table
+
+Gestion des statuts (Pending, Paid, Shipped, Delivered)
+
+Association Order ↔ Payment ↔ Shipment
+
+Tests avec Stripe sandbox
+
+Sortie attendue :
+
+Exemple de service Stripe (StripeService.cs)
+
+Workflow complet Order → Payment → Shipment
+
+Exemple d’appel côté frontend (Stripe.js)
+
+Bonnes pratiques de sécurité (secret keys, .env)
+
+🎨 MODULE 6 – Frontend React + TypeScript
+
+Objectif : Créer une interface web moderne, rapide et responsive.
+
+Stack : React + TypeScript + TailwindCSS + React Query + Axios + Redux Toolkit
+
+Inclure :
+
+Structure du projet frontend (pages, components, services, store)
+
+Routing : React Router v7
+
+Authentification avec JWT (stockage sécurisé)
+
+Appels API avec Axios (intercepteurs)
+
+Composants clés : Home, ProductList, ProductDetail, Cart, Checkout, Profile
+
+Gestion du panier avec Zustand ou Redux Toolkit
+
+Intégration Stripe côté client
+
+Formulaires : React Hook Form + Yup
+
+Sortie attendue :
+
+Arborescence React
+
+Exemple de composants (LoginForm, ProductCard, CartPage)
+
+Exemples d’appels API
+
+Commandes npm à exécuter (npm run dev, etc.)
+
+🔄 MODULE 7 – Communication Temps Réel (SignalR)
+
+Objectif : Ajouter un système de notifications et d’événements en temps réel avec SignalR.
+
+Inclure :
+
+Configuration backend : SignalR Hub
+
+Exemple : notification “commande expédiée”
+
+Authentification SignalR
+
+Client React avec @microsoft/signalr
+
+Cas d’usage : chat support, notification, panier mis à jour en live
+
+Sortie attendue :
+
+Code Hub C#
+
+Exemple client React
+
+Étapes d’intégration (Program.cs, services)
+
+⚡ MODULE 8 – Optimisation & Performance
+
+Objectif : Optimiser les performances du site à tous les niveaux.
+
+Inclure :
+
+Caching Redis pour les produits et catégories
+
+Pagination EF Core + Lazy Loading
+
+CDN (Cloudflare / AWS CloudFront)
+
+Optimisation images (Sharp, TinyPNG)
+
+CI/CD avec GitHub Actions (build, test, deploy)
+
+Monitoring avec Sentry / Application Insights
+
+Minification, bundle splitting (frontend)
+
+Sortie attendue :
+
+Config Redis + exemple d’utilisation
+
+Exemple de pipeline GitHub Actions
+
+Bonnes pratiques EF Core (no tracking, Include optimisé)
+
+☁️ MODULE 9 – Déploiement Cloud (Docker + Azure/AWS)
+
+Objectif : Déployer l’application complète en production.
+
+Inclure :
+
+Dockerfile pour backend et frontend
+
+docker-compose (API + React + PostgreSQL + Redis)
+
+Déploiement Azure App Service / AWS Elastic Beanstalk
+
+Configuration DNS, HTTPS, reverse proxy (Nginx)
+
+Variables d’environnement sécurisées
+
+Sauvegarde base et volumes Docker
+
+Sortie attendue :
+
+Dockerfiles complets
+
+docker-compose.yml
+
+Étapes de déploiement Cloud
+
+Commandes CLI utiles (docker build, docker push, etc.)
+
+🔧 MODULE 10 – Maintenance, Tests & Évolution
+
+Objectif : Garantir la qualité, la stabilité et l’évolution du projet.
+
+Inclure :
+
+Tests unitaires (xUnit, Moq)
+
+Tests d’intégration (EF InMemory)
+
+Tests E2E (Cypress)
+
+Logging (Serilog)
+
+Backups automatiques base de données
+
+Documentation (Swagger, README, diagrammes)
+
+Stratégie d’évolution (microservices, scale horizontal)
+
+Sortie attendue :
+
+Exemple de test xUnit
+
+Exemple de log Serilog
+
+Script de backup
+
+Plan de maintenance (monitoring, maj, sécurité)

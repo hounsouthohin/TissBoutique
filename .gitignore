@@ -1,0 +1,36 @@
+# Secrets - NE JAMAIS COMMIT
+**/appsettings.json
+**/appsettings.Development.json
+**/appsettings.Production.json
+**/appsettings.*.json
+
+# Sauf les exemples
+!**/appsettings.Example.json
+
+# Build
+**/bin/
+**/obj/
+**/.vs/
+*.user
+*.suo
+
+# Frontend
+**/node_modules/
+**/dist/
+**/.env
+**/.env.local
+
+# Database
+*.db
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/

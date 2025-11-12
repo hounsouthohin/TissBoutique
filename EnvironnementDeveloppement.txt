@@ -1,0 +1,24 @@
+####Backend
+	bash# .NET 8 SDK
+https://dotnet.microsoft.com/download/dotnet/8.0
+
+# Vérifier l'installation
+dotnet --version
+# Output attendu: 8.0.x
+
+
+###FrontEnd
+	# Node.js 20+ (inclut npm)
+		https://nodejs.org/
+
+	Vérifier l'installation
+		node --version  # v20.x.x
+		npm --version   # 10.x.x
+
+
+###Base de données
+	# PostgreSQL 15+
+	https://www.postgresql.org/download/
+
+# OU utiliser Docker (recommandé)
+	docker pull postgres:15-alpine

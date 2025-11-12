@@ -1,0 +1,102 @@
+version: '3.8'
+
+services:
+  # ============================================
+  # DATABASE - PostgreSQL
+  # ============================================
+  postgres:
+    image: postgres:15-alpine
+    container_name: ecommerce_postgres
+    environment:
+      POSTGRES_USER: ecommerce_user
+      POSTGRES_PASSWORD: SecurePass123!
+      POSTGRES_DB: ecommerce_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - ecommerce-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ecommerce_user -d ecommerce_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ============================================
+  # CACHE - Redis
+  # ============================================
+  redis:
+    image: redis:7-alpine
+    container_name: ecommerce_redis
+    ports:
+      - "6379:6379"
+    networks:
+      - ecommerce-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  # ============================================
+  # BACKEND - ASP.NET Core API
+  # ============================================
+  backend:
+    build:
+      context: ./backend
+      dockerfile: ECommerce.API/Dockerfile
+    container_name: ecommerce_backend
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__DefaultConnection=Host=postgres;Database=ecommerce_db;Username=ecommerce_user;Password=SecurePass123!;Include Error Detail=true
+      - ConnectionStrings__Redis=redis:6379
+      - JwtSettings__Secret=YourSuperSecretKeyMinimum32CharactersLongForProduction!
+      - JwtSettings__Issuer=ECommerceAPI
+      - JwtSettings__Audience=ECommerceClient
+      - JwtSettings__ExpiryMinutes=60
+      - Stripe__SecretKey=${STRIPE_SECRET_KEY:-sk_test_dummy}
+      - Stripe__PublishableKey=${STRIPE_PUBLISHABLE_KEY:-pk_test_dummy}
+      - Email__SmtpHost=smtp.gmail.com
+      - Email__SmtpPort=587
+      - Email__SmtpUser=${EMAIL_USER:-}
+      - Email__SmtpPassword=${EMAIL_PASSWORD:-}
+      - Email__From=noreply@ecommerce.com
+      - Cors__AllowedOrigins__0=http://localhost:3000
+      - Cors__AllowedOrigins__1=http://localhost:5173
+    ports:
+      - "5000:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - ecommerce-network
+    restart: unless-stopped
+
+  # ============================================
+  # FRONTEND - React (Optionnel pour tests backend)
+  # ============================================
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: Dockerfile
+  #   container_name: ecommerce_frontend
+  #   environment:
+  #     - VITE_API_URL=http://localhost:5000/api
+  #   ports:
+  #     - "3000:80"
+  #   depends_on:
+  #     - backend
+  #   networks:
+  #     - ecommerce-network
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  ecommerce-network:
+    driver: bridge

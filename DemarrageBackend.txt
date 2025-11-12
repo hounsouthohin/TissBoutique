@@ -1,0 +1,42 @@
+
+#Mon token register 
+"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjdkN2I0MGZjLTUwNzUtNDUwNy04MDkzLTcxMWY2NjFjZGQ5NCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6IkFydGh1ckBleGFtcGxlLmNvbSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJCYW1iYXJhIEFydGh1ciIsImp0aSI6IjVhNzMxNTM0LTI4MWMtNGM0Ny1iMWU5LWI4YzU4MzRhNjlmZiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkN1c3RvbWVyIiwiZXhwIjoxNzYyNjQ3NTI1LCJpc3MiOiJFQ29tbWVyY2VBUEkiLCJhdWQiOiJFQ29tbWVyY2VDbGllbnQifQ.ae6cVtWqlfdB8Og0gKiR0IcdPHeay7TRrqyAfAJ-XzM"
+
+
+#Mon token Login
+"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjdkN2I0MGZjLTUwNzUtNDUwNy04MDkzLTcxMWY2NjFjZGQ5NCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6IkFydGh1ckBleGFtcGxlLmNvbSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJCYW1iYXJhIEFydGh1ciIsImp0aSI6ImJjMTBiMjBmLTUxNjItNDNlOC1iZTM5LTM2ZDI1YjU4ZGUyZiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkN1c3RvbWVyIiwiZXhwIjoxNzYyNjQ3NjE2LCJpc3MiOiJFQ29tbWVyY2VBUEkiLCJhdWQiOiJFQ29tbWVyY2VDbGllbnQifQ.TKUVGTaKk-Nu8jl0X7vvK3Q9Q6B0_AJwfOejEonEc9s"
+
+
+
+
+DemarrageBackend
+
+cd backend
+
+# Restore packages
+dotnet restore
+
+# Build
+dotnet build
+
+# Si erreurs, corrige-les avant de continuer
+
+######################
+
+# Depuis la racine
+docker-compose up -d postgres redis
+
+#######################
+
+docker-compose up --build -d
+
+# Entrer dans le container backend
+docker exec -it ecommerce_backend bash
+
+# Appliquer les migrations
+dotnet ef database update --project /src/ECommerce.Infrastructure --startup-project /src/ECommerce.API --context AppDbContext
+
+# Sortir du container
+exit
+
+

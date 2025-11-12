@@ -1,0 +1,28 @@
+###Phase du projet Frontend
+
+cd ../frontend
+
+# 1. Créer l'app React avec Vite + TypeScript
+npm create vite@latest . -- --template react-ts
+
+# 2. Installer les dépendances principales
+npm install
+
+# 3. Installer TailwindCSS
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p
+
+# 4. Installer les bibliothèques essentielles
+npm install react-router-dom @reduxjs/toolkit react-redux
+npm install axios @microsoft/signalr
+npm install react-hook-form zod @hookform/resolvers
+npm install @tanstack/react-query
+npm install @stripe/stripe-js @stripe/react-stripe-js
+npm install react-hot-toast
+npm install lucide-react  # Icons
+
+# 5. Installer les types TypeScript
+npm install -D @types/node
+
+# 6. Configurer TailwindCSS
+# (voir fichier de configuration ci-dessous)
