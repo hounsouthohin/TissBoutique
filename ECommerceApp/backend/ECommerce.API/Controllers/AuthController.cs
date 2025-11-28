@@ -31,7 +31,7 @@ namespace ECommerce.API.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error during registration");
-                return BadRequest(new { message = ex.Message });
+                return BadRequest(new { message = "An error occurred during registration." });
             }
         }
 
@@ -52,7 +52,7 @@ namespace ECommerce.API.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error during login");
-                return BadRequest(new { message = ex.Message });
+                return BadRequest(new { message = "An error occurred during login." });
             }
         }
 

@@ -15,6 +15,7 @@ namespace ECommerce.Infrastructure.Repositories
         public IProductRepository Products { get; }
         public IOrderRepository Orders { get; }
         public ICartRepository Carts { get; }
+        public IReviewRepository Reviews { get; }
 
         private readonly Dictionary<Type, object> _repositories = new();
 
@@ -24,6 +25,7 @@ namespace ECommerce.Infrastructure.Repositories
             Products = new ProductRepository(_context);
             Orders = new OrderRepository(_context);
             Carts = new CartRepository(_context);
+            Reviews = new ReviewRepository(_context);
         }
 
         public IGenericRepository<T> Repository<T>() where T : class

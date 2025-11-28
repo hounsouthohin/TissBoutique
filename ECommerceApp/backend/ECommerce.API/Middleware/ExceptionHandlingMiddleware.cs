@@ -7,11 +7,13 @@ namespace ECommerce.API.Middleware
     {
         private readonly RequestDelegate _next;
         private readonly ILogger<ExceptionHandlingMiddleware> _logger;
+        private readonly IWebHostEnvironment _env;
 
-        public ExceptionHandlingMiddleware(RequestDelegate next, ILogger<ExceptionHandlingMiddleware> logger)
+        public ExceptionHandlingMiddleware(RequestDelegate next, ILogger<ExceptionHandlingMiddleware> logger, IWebHostEnvironment env)
         {
             _next = next;
             _logger = logger;
+            _env = env;
         }
 
         public async Task InvokeAsync(HttpContext context)
@@ -22,35 +24,56 @@ namespace ECommerce.API.Middleware
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An unhandled exception occurred");
+                _logger.LogError(ex, "An unhandled exception occurred: {Message}", ex.Message);
                 await HandleExceptionAsync(context, ex);
             }
         }
 
-        private static Task HandleExceptionAsync(HttpContext context, Exception exception)
+        private Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             context.Response.ContentType = "application/json";
-            
+
             var (statusCode, message) = exception switch
             {
-                UnauthorizedAccessException => (HttpStatusCode.Unauthorized, "Unauthorized access"),
-                KeyNotFoundException => (HttpStatusCode.NotFound, "Resource not found"),
-                ArgumentException => (HttpStatusCode.BadRequest, exception.Message),
-                InvalidOperationException => (HttpStatusCode.BadRequest, exception.Message),
-                _ => (HttpStatusCode.InternalServerError, "An internal server error occurred")
+                // Exceptions personnalisées de l'application (si vous en avez)
+                // ECommerce.Application.Exceptions.ValidationException validationException => (HttpStatusCode.BadRequest, validationException.Message),
+                ECommerce.Application.Exceptions.NotFoundException => (HttpStatusCode.NotFound, exception.Message),
+                ECommerce.Application.Exceptions.BadRequestException => (HttpStatusCode.BadRequest, exception.Message),
+                
+                // Exceptions générales
+                UnauthorizedAccessException => (HttpStatusCode.Unauthorized, "Unauthorized"),
+                KeyNotFoundException => (HttpStatusCode.NotFound, "The requested resource was not found."),
+                _ => (HttpStatusCode.InternalServerError, "An internal server error has occurred.")
             };
 
             context.Response.StatusCode = (int)statusCode;
 
-            var response = new
+            object response;
+            if (_env.IsDevelopment())
             {
-                StatusCode = (int)statusCode,
-                Message = message,
-                Detailed = exception.Message
-            };
+                response = new
+                {
+                    StatusCode = (int)statusCode,
+                    Message = message,
+                    Detailed = exception.ToString() // Fournir la trace complète en développement
+                };
+            }
+            else
+            {
+                response = new
+                {
+                    StatusCode = (int)statusCode,
+                    Message = message
+                };
+            }
 
-            var jsonResponse = JsonSerializer.Serialize(response);
+            var jsonResponse = JsonSerializer.Serialize(response, new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            });
+
             return context.Response.WriteAsync(jsonResponse);
         }
     }
 }
+

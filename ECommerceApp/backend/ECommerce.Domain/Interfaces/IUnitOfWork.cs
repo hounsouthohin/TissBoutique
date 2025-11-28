@@ -5,6 +5,7 @@
         IProductRepository Products { get; }
         IOrderRepository Orders { get; }
         ICartRepository Carts { get; }
+        IReviewRepository Reviews { get; }
 
         IGenericRepository<T> Repository<T>() where T : class;
 
