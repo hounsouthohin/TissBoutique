@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using ECommerce.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 
 namespace ECommerce.API.Hubs
 {
     [Authorize]
-    public class NotificationHub : Hub
+    public class NotificationHub : Hub<IAppHubClient>
     {
         private readonly ILogger<NotificationHub> _logger;
 
@@ -33,21 +34,6 @@ namespace ECommerce.API.Hubs
                 _logger.LogInformation("User {UserId} disconnected from notification hub", userId);
             }
             await base.OnDisconnectedAsync(exception);
-        }
-
-        public async Task SendNotificationToUser(string userId, string message)
-        {
-            await Clients.Group(userId).SendAsync("ReceiveNotification", message);
-        }
-
-        public async Task SendOrderUpdate(string userId, object orderData)
-        {
-            await Clients.Group(userId).SendAsync("OrderUpdated", orderData);
-        }
-
-        public async Task SendPaymentUpdate(string userId, object paymentData)
-        {
-            await Clients.Group(userId).SendAsync("PaymentUpdated", paymentData);
         }
     }
 }

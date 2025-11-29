@@ -135,6 +135,7 @@ builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddScoped<IReviewService, ReviewService>();
+builder.Services.AddScoped<INotificationService, SignalRNotificationService>();
 
 // Infrastructure Services
 builder.Services.AddScoped<IStripeService, StripePaymentService>();

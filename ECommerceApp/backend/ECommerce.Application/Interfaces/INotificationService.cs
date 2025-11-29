@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace ECommerce.Application.Interfaces
 {
-    internal interface INotificationService
+    public interface INotificationService
     {
+        Task SendOrderStatusUpdateAsync(string userId, int orderId, string newStatus, string orderNumber);
+        Task SendGenericNotificationToUserAsync(string userId, string message);
     }
 }

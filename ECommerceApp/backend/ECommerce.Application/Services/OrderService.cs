@@ -18,17 +18,20 @@ namespace ECommerce.Application.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IEmailService _emailService;
+        private readonly INotificationService _notificationService;
         private readonly ILogger<OrderService> _logger;
 
         public OrderService(
             IUnitOfWork unitOfWork,
             IMapper mapper,
             IEmailService emailService,
+            INotificationService notificationService,
             ILogger<OrderService> logger)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _emailService = emailService;
+            _notificationService = notificationService;
             _logger = logger;
         }
 
@@ -166,6 +169,9 @@ namespace ECommerce.Application.Services
 
             _logger.LogInformation("Order {OrderId} status updated to {Status}", id, dto.Status);
 
+            // Send real-time notification
+            await _notificationService.SendOrderStatusUpdateAsync(order.UserId, order.Id, order.Status.ToString(), order.OrderNumber);
+
             return _mapper.Map<OrderDto>(order);
         }
 
@@ -213,6 +219,9 @@ namespace ECommerce.Application.Services
             await _unitOfWork.SaveChangesAsync(); // ✅ CORRIGÉ : SaveChangesAsync au lieu de CompleteAsync
 
             _logger.LogInformation("Order {OrderId} status updated to {Status}", orderId, status);
+
+            // Send real-time notification
+            await _notificationService.SendOrderStatusUpdateAsync(order.UserId, order.Id, order.Status.ToString(), order.OrderNumber);
 
             return _mapper.Map<OrderDto>(order);
         }
