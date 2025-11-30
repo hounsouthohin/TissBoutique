@@ -8,46 +8,44 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Instance MCP
+# Instance MCP (PAS de session_timeout)
 mcp = FastMCP(name="ecommerce-devtools")
 
-# ✅ IMPORT TES CLASSES RÉELLES
+# ✅ TES OUTILS IMPORTÉS
 from tools.db_client import DatabaseClientTool
 from tools.performance_analyzer import PerformanceAnalyzerTool
 from tools.interactive_debugger import InteractiveDebuggerTool
 
-# ✅ INITIALISE TES OUTILS
 db_tool = DatabaseClientTool()
 perf_tool = PerformanceAnalyzerTool()
 debug_tool = InteractiveDebuggerTool()
 
-# === TES OUTILS RÉELS EN DIRECT ===
 @mcp.tool()
 async def execute_db_query(query: str, limit: int = 100) -> str:
-    """🗄️ **RÉEL** PostgreSQL - asyncpg"""
+    """🗄️ PostgreSQL RÉEL - asyncpg"""
     return await db_tool.execute_query(query, limit)
 
 @mcp.tool()
 async def analyze_endpoint(endpoint: str, method: str = "GET", payload: str = "{}") -> str:
-    """🔍 **RÉEL** HTTP aiohttp + Métriques"""
+    """🔍 API RÉEL - aiohttp"""
     return await perf_tool.analyze(endpoint, method, payload)
 
 @mcp.tool()
 async def debug_eval(code: str) -> str:
-    """🐛 **RÉEL** Debug C#"""
+    """🐛 C# Debug RÉEL"""
     return await debug_tool.evaluate(code)
 
 @mcp.tool()
 async def list_endpoints() -> dict:
-    """📋 Liste endpoints API"""
+    """📋 Endpoints API"""
     return {
         "endpoints": ["/api/products", "/api/orders", "/api/categories"],
         "total": 25
     }
 
-# === DÉMARRAGE 7 ÉTAPES ===
+# === DÉMARRAGE ===
 if __name__ == "__main__":
-    logger.info("🚀 🛒 MCP - TES OUTILS RÉELS ✅")
+    logger.info("🚀 🛒 MCP - TES OUTILS ✅")
     mcp.run(
         transport="http",
         host="0.0.0.0",

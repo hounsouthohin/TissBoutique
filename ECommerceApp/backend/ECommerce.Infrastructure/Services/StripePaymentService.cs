@@ -41,7 +41,6 @@ namespace ECommerce.Infrastructure.Services
                 {
                     Amount = (long)(amount * 100), // Conversion en centimes
                     Currency = currency?.ToLower() ?? _currency,
-                    PaymentMethodTypes = new List<string> { "card" },
                     Metadata = metadata ?? new Dictionary<string, string>(),
                     Description = $"Order payment - {metadata?.GetValueOrDefault("OrderNumber", "N/A")}",
                     AutomaticPaymentMethods = new PaymentIntentAutomaticPaymentMethodsOptions
