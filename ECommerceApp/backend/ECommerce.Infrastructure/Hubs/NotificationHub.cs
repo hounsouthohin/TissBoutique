@@ -1,8 +1,11 @@
-﻿using ECommerce.Application.Interfaces;
+using ECommerce.Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Threading.Tasks;
 
-namespace ECommerce.API.Hubs
+namespace ECommerce.Infrastructure.Hubs
 {
     [Authorize]
     public class NotificationHub : Hub<IAppHubClient>

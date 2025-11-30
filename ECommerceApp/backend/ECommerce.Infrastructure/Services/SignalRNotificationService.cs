@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using ECommerce.API.Hubs;
+using ECommerce.Infrastructure.Hubs;
 using ECommerce.Application.Interfaces;
 using Microsoft.AspNetCore.SignalR;
 using System.Threading.Tasks;

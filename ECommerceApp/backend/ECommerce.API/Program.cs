@@ -1,5 +1,5 @@
 ﻿using ECommerce.API.Filters;
-using ECommerce.API.Hubs;
+using ECommerce.Infrastructure.Hubs;
 using ECommerce.API.Middleware;
 using ECommerce.Application.Interfaces;
 using ECommerce.Application.Mappings;
