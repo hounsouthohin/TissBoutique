@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # ============================================
   # DATABASE - PostgreSQL
@@ -40,58 +38,33 @@ services:
       retries: 5
 
   # ============================================
-  # BACKEND - ASP.NET Core API
+  # MCP GEMINI DEVTOOLS SERVER ✅ TES OUTILS RÉELS
   # ============================================
-  backend:
+  ecommerce-mcp:
     build:
-      context: ./backend
-      dockerfile: ECommerce.API/Dockerfile
-    container_name: ecommerce_backend
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:8080
-      - ConnectionStrings__DefaultConnection=Host=postgres;Database=ecommerce_db;Username=ecommerce_user;Password=SecurePass123!;Include Error Detail=true
-      - ConnectionStrings__Redis=redis:6379
-      - JwtSettings__Secret=YourSuperSecretKeyMinimum32CharactersLongForProduction!
-      - JwtSettings__Issuer=ECommerceAPI
-      - JwtSettings__Audience=ECommerceClient
-      - JwtSettings__ExpiryMinutes=60
-      - Stripe__SecretKey=${STRIPE_SECRET_KEY:-sk_test_dummy}
-      - Stripe__PublishableKey=${STRIPE_PUBLISHABLE_KEY:-pk_test_dummy}
-      - Email__SmtpHost=smtp.gmail.com
-      - Email__SmtpPort=587
-      - Email__SmtpUser=${EMAIL_USER:-}
-      - Email__SmtpPassword=${EMAIL_PASSWORD:-}
-      - Email__From=noreply@ecommerce.com
-      - Cors__AllowedOrigins__0=http://localhost:3000
-      - Cors__AllowedOrigins__1=http://localhost:5173
+      context: ./mcp-gemini-server
+      dockerfile: Dockerfile
+    container_name: ecommerce_mcp_gemini
     ports:
-      - "5000:8080"
+      - "3001:8080"                    # ← EXTÉRIEUR :3001
+    volumes:
+      - ./mcp-gemini-server:/app       # ← Hot-reload
     depends_on:
       postgres:
-        condition: service_healthy
+        condition: service_healthy     # ← ATTEND DB
       redis:
-        condition: service_healthy
+        condition: service_healthy     # ← ATTEND REDIS
     networks:
-      - ecommerce-network
+      - ecommerce-network              # ← RÉSEAU INTERNE
     restart: unless-stopped
-
-  # ============================================
-  # FRONTEND - React (Optionnel pour tests backend)
-  # ============================================
-  # frontend:
-  #   build:
-  #     context: ./frontend
-  #     dockerfile: Dockerfile
-  #   container_name: ecommerce_frontend
-  #   environment:
-  #     - VITE_API_URL=http://localhost:5000/api
-  #   ports:
-  #     - "3000:80"
-  #   depends_on:
-  #     - backend
-  #   networks:
-  #     - ecommerce-network
+    environment:
+      # ✅ TES OUTILS DB → PostgreSQL DOCKER
+      - DB_CONNECTION=postgresql://ecommerce_user:SecurePass123!@postgres:5432/ecommerce_db
+      # ✅ TES OUTILS API → Backend externe
+      - API_HOST=http://host.docker.internal:5000
+      # ✅ TES OUTILS REDIS → Docker interne
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
 
 volumes:
   postgres_data:

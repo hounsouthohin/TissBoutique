@@ -1,0 +1,93 @@
+Le Processus en 7 Étapes (100% Réproducible)
+Étape 1 : Template de base (copie-colle toujours ça)
+Python"""
+NOM_DU_SERVEUR - MCP Server
+"""
+from fastmcp import FastMCP
+import logging
+
+# Logger
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# Instance MCP (CHANGE UNIQUEMENT LE NOM)
+mcp = FastMCP(name="TON_NOM_UNIQUE")  # ex: "DatabaseMCP", "ImageMCP"
+
+# === TES OUTILS ===
+@mcp.tool()
+def ton_premier_outil(param: str) -> dict:
+    """Description de l'outil pour Gemini"""
+    return {"result": f"Tu as appelé {param}"}
+
+@mcp.tool()
+def get_stats() -> dict:
+    """Statistiques du serveur"""
+    return {"status": "✅ Running"}
+
+# === DÉMARRAGE (NE JAMAIS CHANGER CETTE PARTIE) ===
+if __name__ == "__main__":
+    logger.info("🚀 Démarrage du serveur MCP")
+    mcp.run(
+        transport="http",
+        host="0.0.0.0",
+        port=8080,           # ou 8081, 8082... pour plusieurs serveurs
+        path="/mcp"          # IMPORTANT : toujours "/mcp"
+    )
+Étape 2 : requirements.txt minimal
+txtfastmcp>=2.13.1
+uvicorn[standard]>=0.30.0
+requests>=2.31.0
+python-dotenv>=1.0.0
+rich>=13.7.0
+(Ajoute tes dépendances spécifiques après)
+Étape 3 : Dockerfile simple
+dockerfileFROM python:3.11-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY . .
+EXPOSE 8080
+CMD ["python", "server.py"]
+Étape 4 : docker-compose.yml (un par serveur)
+YAMLservices:
+  ton-serveur:
+    build: .
+    container_name: ton-serveur-mcp
+    ports:
+      - "8080:8080"     # CHANGE LE PORT si plusieurs serveurs
+    volumes:
+      - .:/app
+    restart: unless-stopped
+Étape 5 : Build & Test (toujours cette séquence)
+Bash# 1. Build propre
+docker-compose build --no-cache
+
+# 2. Lancer
+docker-compose up
+
+# 3. VÉRIFIER que ça marche (OBLIGATOIRE)
+curl http://localhost:8080/mcp/list-tools
+# → Doit renvoyer JSON avec tes outils
+Étape 6 : Configuration Gemini Code Assist
+Fichier : ~/.gemini/settings.json (ou dans Cursor/Continue)
+JSON{
+  "mcpServers": {
+    "ton-serveur-mcp": {
+      "httpUrl": "http://127.0.0.1:8080/mcp/",
+      "timeout": 360000,
+      "trust": true
+    }
+  }
+}
+Points critiques :
+
+http://127.0.0.1:8080/mcp/ ← le slash final / est OBLIGATOIRE
+path="/mcp" dans mcp.run() ← doit correspondre
+Port différent = URL différente
+
+Étape 7 : Vérification finale dans Gemini
+
+Redémarre Gemini Code Assist
+Ouvre la sidebar MCP (icône outils)
+Tu vois ton serveur → ✅
+Clique sur un outil → il apparaît dans l'autocomplétion
